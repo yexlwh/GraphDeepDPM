@@ -1,6 +1,7 @@
 import os
 from scipy.misc import imsave
 import numpy as np
+from tensorflow.examples.tutorials.mnist import input_data
 
 class Generator(object):
 
@@ -22,8 +23,9 @@ class Generator(object):
             num_samples: number of samples to generate
             directory: a directory to save the images
         '''
-        orderedImage = np.load("orderedImage6.npy")
-        images = orderedImage[0: 128*5, :]
+        data_directory = os.path.join("", "MNIST")
+        mnist = input_data.read_data_sets(data_directory, one_hot=True)
+        images, _ = mnist.train.next_batch(128)
         imgs = self.sess.run(self.sampled_tensor,{self.input_tensor: images})
         for k in range(imgs.shape[0]):
             imgs_folder = os.path.join(directory, 'imgs')
