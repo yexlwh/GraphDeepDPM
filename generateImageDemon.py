@@ -24,6 +24,7 @@ from utils import discriminator
 from sklearn.decomposition import PCA
 from vdpmm_maximizePlusGaussian import *
 from vdpmm_expectationPlusGaussian import *
+from sklearn import metrics
 
 hidden_size=1
 batch_size=128
@@ -193,31 +194,13 @@ if __name__ == "__main__":
         print("Loss %f" % training_loss)
         # images, _ = mnist.train.next_batch(batch_size*10)
         generate_and_save_images(images, "")
-    print(posMean);
+    # print(posMean);
     temp = np.max(gammas, axis=1)
     temp.shape = (Nz, 1)
     index1 = np.where(temp == gammas)
-    print(index1)
-    f2 = plt.figure(1)
-    maker=['o','v','^','<','>','1','2','3','4','s','p'];
-    color=['b','c','g','k','m','r','w','y']
-    orderedImage6 = np.load("orderedImage8.npy")
-    orderedImage7 = np.load("orderedImage4.npy")
-    images6 = orderedImage6[0:64, :]
-    images7 = orderedImage7[0:64, :]
-    images = np.concatenate((images6, images7))
+    labelsrc=index1[1]+1.0
     a = np.zeros((64, 1))
     b = np.ones((64, 1))
     labelTemp=np.concatenate((a, b))
-    for i in range(1):
-        # images, label = mnist.train.next_batch(batch_size)
-        dataShow=sess.run(mean,{input_tensor:images});
-        # print(dataShow)
-        #for j in range(batch_size):
-
-        for j in range(batch_size):
-            # labelTemp = np.argmax(label[j])
-            #print((labelTemp))
-            # print(dataShow[j],dataShow[j])
-            p3 = plt.scatter(dataShow[j],dataShow[j], marker=maker[int(labelTemp[j])], color=color[int(labelTemp[j])%8], label='3', s=15)
-    plt.show()
+    labelDst=labelTemp.reshape(1, 128).tolist()[0]
+    print("NMI clustering accuracy",metrics.adjusted_mutual_info_score(labelDst, labelsrc))
