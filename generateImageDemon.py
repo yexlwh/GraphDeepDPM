@@ -150,7 +150,7 @@ if __name__ == "__main__":
     #images2, _ = mnist.train.next_batch(batch_size*100)
     lambdaPos = 0.0
 
-    for epoch in range(50):
+    for epoch in range(100):
         training_loss = 0.0
 
         # pbar = ProgressBar()
