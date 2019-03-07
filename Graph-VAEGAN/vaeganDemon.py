@@ -46,6 +46,10 @@ if __name__ == "__main__":
             disReal = kneighbors_graph(images, 5, mode='distance', include_self=True)
             flagReal = flagReal.toarray()
             disReal = disReal.toarray()
+            
+            flagReal2 = (flagReal - 1)
+            flagReal2 = flagReal2 * flagReal2
+            disReal = 100 * flagReal2 + flagReal * 1
             for i in range(batch_size):
                 Xtemp2 = np.matlib.repmat(images[i, :], batch_size, 1)
                 disTemp = disReal[i, :].reshape(1, batch_size);
